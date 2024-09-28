@@ -104,24 +104,14 @@ def generate_nonce_range_per_thread(thread_id, threads):
     return random_start, random_end
 
 def print_nonce_box(nonce):
-    """Print the current nonce being tested in a box format."""
-    box_width = 35
-    output = f"{Fore.YELLOW}┌{'─' * (box_width - 2)}┐\n" \
-             f"{Fore.YELLOW}│ {'Mining {nonce}'.ljust(box_width - 2)}│\n" \
-             f"{Fore.YELLOW}└{'─' * (box_width - 2)}┘"
-    
-    # Clear previous line output
-    sys.stdout.write('\r' + output)
+    """Print the current nonce being tested in a single line format."""
+    sys.stdout.write(Fore.YELLOW + f"\rMining nonce: {nonce}      ")  # Overwrite the line with a carriage return
     sys.stdout.flush()  # Flush the output buffer
 
 def clear_nonce_display():
-    """Clear the nonce display by moving the cursor up and printing spaces."""
-    box_width = 30
-    # Move the cursor up and clear the nonce box
-    sys.stdout.write(Fore.YELLOW + "\033[F" + " " * box_width + "\n")  # Clear the line above
-    sys.stdout.write(Fore.YELLOW + "\033[F" + " " * box_width + "\n")  # Clear the nonce box
+    """Clear the nonce display by moving the cursor back."""
+    sys.stdout.write(Fore.YELLOW + "\r" + " " * 30 + "\r")  # Clear the line
     sys.stdout.flush()  # Flush the output buffer
-
 def submit_block(block_data, is_mined):
     """Submit the mined block to the node."""
     global hash_adjustment, rejection_count

@@ -14,10 +14,10 @@ from colorama import Fore, Style, init
 init(autoreset=True)
 
 MINER_ID = 'miner1'  # Unique miner ID
-NODE_URL = 'http://127.0.0.1:5001/api'  # Node URL
+NODE_URL = 'http://192.168.0.103:5001/api'  # Node URL
 RECEIPT_ADDRESS = 'TXVGuTWdPx1KuMo98oZDAb6SgZvUV8FS6r'  # Recipient address
-NUM_THREADS = 4  # Number of mining threads
-NONCE_RANGE = 10000000  # Total range of nonce to explore
+NUM_THREADS = 2  # Number of mining threads
+NONCE_RANGE = 1000000  # Total range of nonce to explore
 THREAD_NONCE_RANGE = NONCE_RANGE // NUM_THREADS  # Nonce range per thread
 
 # Shared variable to hold mined block hash to avoid duplicate submissions
@@ -106,9 +106,12 @@ def generate_nonce_range_per_thread(thread_id, threads):
 def print_nonce_box(nonce):
     """Print the current nonce being tested in a box format."""
     box_width = 35
-    sys.stdout.write(Fore.YELLOW + "┌" + "─" * (box_width - 2) + "┐\n")
-    sys.stdout.write(Fore.YELLOW + "│ " + f"Mining {nonce}".ljust(box_width - 2) + "\n")
-    sys.stdout.write(Fore.YELLOW + "└" + "─" * (box_width - 2) + "┘\n")
+    output = f"{Fore.YELLOW}┌{'─' * (box_width - 2)}┐\n" \
+             f"{Fore.YELLOW}│ {'Mining {nonce}'.ljust(box_width - 2)}│\n" \
+             f"{Fore.YELLOW}└{'─' * (box_width - 2)}┘"
+    
+    # Clear previous line output
+    sys.stdout.write('\r' + output)
     sys.stdout.flush()  # Flush the output buffer
 
 def clear_nonce_display():
